@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaint System</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    color:#ffffff;
+    min-height:100vh;
+}
+
+/* Navbar */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 34px;
+    background:rgba(0,0,0,0.22);
+    backdrop-filter:blur(8px);
+}
+
+.navbar h2{
+    font-size:30px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.admin-btn{
+    text-decoration:none;
+    background:#facc15;
+    color:#111827;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:700;
+    transition:0.3s ease;
+}
+
+.admin-btn:hover{
+    background:#fde047;
+    color:#111827;
+}
+
+/* Main Area */
+.hero{
+    min-height:calc(100vh - 78px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px 20px;
+}
+
+.card{
+    width:100%;
+    max-width:900px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    border-radius:24px;
+    padding:42px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.28);
+}
+
+.title{
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.title h1{
+    font-size:44px;
+    margin-bottom:10px;
+    font-weight:800;
+}
+
+.title p{
+    color:#e2e8f0;
+    font-size:18px;
+}
+
+/* Form */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-bottom:16px;
+}
+
+.input-group{
+    width:100%;
+}
+
+.input-group input,
+.input-group textarea{
+    width:100%;
+    padding:15px 16px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    font-size:16px;
+    background:#ffffff;
+    color:#111827;
+}
+
+textarea{
+    min-height:150px;
+    resize:none;
+}
+
+/* Button */
+.btn-wrap{
+    text-align:center;
+    margin-top:10px;
+}
+
+button{
+    border:none;
+    background:#2563eb;
+    color:#ffffff;
+    padding:14px 32px;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s ease;
+    min-width:220px;
+}
+
+button:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(37,99,235,0.35);
+}
+
+/* Features */
+.features{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.feature{
+    background:rgba(255,255,255,0.06);
+    border-radius:16px;
+    padding:18px;
+    text-align:center;
+}
+
+.feature h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.feature p{
+    color:#dbeafe;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* Popup */
+.popup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    animation:fadeIn 0.3s ease;
+}
+
+.popup-content{
+    width:100%;
+    max-width:460px;
+    background:#1e293b;
+    border-radius:22px;
+    padding:32px;
+    text-align:center;
+    box-shadow:0 25px 50px rgba(0,0,0,0.35);
+    animation:scaleIn 0.3s ease;
+}
+
+.popup-content h2{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.popup-content p{
+    font-size:17px;
+    color:#f8fafc;
+    margin:10px 0;
+    line-height:1.7;
+}
+
+.popup-content b{
+    color:#ffffff;
+}
+
+.close-btn{
+    background:#ef4444;
+    margin-top:14px;
+}
+
+.close-btn:hover{
+    background:#dc2626;
+    box-shadow:none;
+    transform:none;
+}
+
+/* Animations */
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes scaleIn{
+    from{opacity:0; transform:scale(0.9);}
+    to{opacity:1; transform:scale(1);}
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .card{
+        padding:26px;
+    }
+
+    .title h1{
+        font-size:34px;
+    }
+
+    .form-grid,
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .navbar{
+        padding:15px 18px;
+    }
+
+    .navbar h2{
+        font-size:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Complaint System</h2>
+    <a href="/login" class="admin-btn">Admin</a>
+</div>
+
+<div class="hero">
+    <div class="card">
+
+        <div class="title">
+            <h1>Submit Complaint</h1>
+            <p>Fast, smart and organized complaint management</p>
+        </div>
+
+        <form action="/predict" method="POST" onsubmit="showLoading()">
+
+            <div class="form-grid">
+                <div class="input-group">
+                    <input type="text" name="name" placeholder="Full Name" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <textarea name="complaint" placeholder="Describe your complaint..." required></textarea>
+            </div>
+
+            <div class="btn-wrap">
+                <button type="submit" id="submitBtn">Submit Complaint</button>
+            </div>
+
+        </form>
+        <br>
+        <br>
+        <p style="text-align:center; color:#94a3b8;">Your feedback helps us improve our services.</p>
+      
+   
+
+{% if message %}
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>Success</h2>
+        <p>{{ message }}</p>
+
+        {% if result %}
+        <p>Category: <b>{{ result }}</b></p>
+        <p>Sentiment: <b>{{ sentiment }}</b></p>
+        <p>Confidence: <b>{{ confidence }}%</b></p>
+        <p>Response: <b>{{ response }}</b></p>
+        {% endif %}
+
+        <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function closePopup(){
+    document.getElementById("popup").style.display="none";
+}
+
+function showLoading(){
+    const btn = document.getElementById("submitBtn");
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+}
+</script>
+
+</body>
+</html>

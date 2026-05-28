@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(90deg, #081225, #16253d, #2b3f5f);
+    min-height:100vh;
+    color:white;
+}
+
+/* Navbar */
+.topbar{
+    width:100%;
+    padding:20px 70px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(0,0,0,0.20);
+    backdrop-filter:blur(8px);
+}
+
+.topbar h2{
+    font-size:30px;
+    font-weight:bold;
+    margin:0;
+}
+
+.logout-btn{
+    background:#facc15;
+    color:black;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:600;
+    transition:0.3s ease;
+}
+
+.logout-btn:hover{
+    background:#eab308;
+    color:black;
+    transform:translateY(-2px);
+}
+
+/* Main Container */
+.main-box{
+    padding:35px;
+}
+
+/* Card */
+.glass-card{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.18);
+    margin-bottom:25px;
+}
+
+/* Form */
+.form-select{
+    border:none;
+    border-radius:12px;
+    padding:12px;
+    font-size:17px;
+}
+
+.filter-btn{
+    width:100%;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:12px;
+    font-weight:600;
+    transition:0.3s ease;
+}
+
+.filter-btn:hover{
+    background:#1d4ed8;
+    color:white;
+}
+
+/* Table */
+.table-box{
+    overflow-x:auto;
+    border-radius:18px;
+}
+
+table{
+    width:100%;
+    background:white;
+    color:#111827;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+thead{
+    background:#111827;
+    color:white;
+}
+
+th, td{
+    padding:14px !important;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#f3f4f6;
+}
+
+/* Badges */
+.badge{
+    font-size:14px;
+    padding:8px 10px;
+    border-radius:8px;
+}
+
+/* Buttons */
+.action-btn{
+    padding:7px 12px;
+    border-radius:8px;
+    font-size:14px;
+    text-decoration:none;
+    color:white;
+    margin:2px;
+    display:inline-block;
+}
+
+.solve{
+    background:#16a34a;
+}
+
+.delete{
+    background:#dc2626;
+}
+
+.solve:hover{
+    background:#15803d;
+    color:white;
+}
+
+.delete:hover{
+    background:#b91c1c;
+    color:white;
+}
+
+.bottom-btn{
+    padding:12px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s ease;
+}
+
+.confusion{
+    background:#2563eb;
+    color:white;
+}
+
+.confusion:hover{
+    background:#1d4ed8;
+    color:white;
+}
+
+.delete-all{
+    border:2px solid #ef4444;
+    color:#ef4444;
+}
+
+.delete-all:hover{
+    background:#ef4444;
+    color:white;
+}
+
+/* Mobile */
+@media(max-width:768px){
+    .topbar{
+        padding:18px 20px;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .topbar h2{
+        font-size:24px;
+    }
+
+    .main-box{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="topbar">
+    <h2>Admin Dashboard</h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+<!-- Main -->
+<div class="main-box">
+
+    <!-- Filter -->
+    <div class="glass-card">
+        <form class="row g-3" method="GET" action="/dashboard">
+
+            <div class="col-md-10">
+                <select class="form-select" name="category">
+                    <option value="">All Categories</option>
+                    <option value="Billing">Billing</option>
+                    <option value="Delivery">Delivery</option>
+                    <option value="Product">Product</option>
+                    <option value="Service">Service</option>
+                    <option value="Technical">Technical</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="filter-btn">Filter</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div class="glass-card table-box">
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Complaint</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Sentiment</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for row in data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td style="max-width:260px;">{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+
+                    <td>
+                        <span class="badge bg-{% if row[7]=='High' %}danger{% elif row[7]=='Medium' %}warning text-dark{% else %}success{% endif %}">
+                            {{ row[7] }}
+                        </span>
+                    </td>
+
+                    <td>{{ row[6] }}</td>
+
+                    <td>
+                        <span class="badge bg-{% if row[8]=='Solved' %}success{% else %}secondary{% endif %}">
+                            {{ row[8] }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <a href="/mark_solved/{{ row[0] }}" class="action-btn solve">Solved</a>
+                        <a href="/delete/{{ row[0] }}" class="action-btn delete">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- Bottom Buttons -->
+    <div class="d-flex gap-3 flex-wrap">
+
+        <a href="/confusion" class="bottom-btn confusion">Confusion Matrix</a>
+
+        <a href="/delete_all" class="bottom-btn delete-all">Delete All</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
